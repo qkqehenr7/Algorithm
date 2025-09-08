@@ -1,2 +1,11 @@
-# Algorithm
-This is an auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+# 🔥 나와의 약속
+### 💀목숨을 걸어라
+하루 1문제 이행 실패 시 나는 목숨을 잃는다.
+### ⚖️주객전도를 경계하라
+알고리즘 풀이를 한다고 다른 중요한 일을 미루거나 놓치지 마라.
+### ⚔️실전처럼 야생적으로 하라
+깔끔한 척 포장하지 마라. 실전처럼, 오직 문제 해결에만 집중하라.
+### ✍️건방지게 키보드에 손을 올리지 마라
+구현의 갈피를 잡기 전까지는 오직 펜과 노트로만 생각하라.
+### 🙏겸손해라
+이미 푼 문제라고 방심하지 마라. 완벽한 풀이는 없다. 끊임없이 되돌아보고 더 나은 방법을 찾아라.
