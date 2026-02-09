@@ -5,18 +5,15 @@ import java.util.StringTokenizer;
 
 public class Main {
 	
-	static int N;
-	static int M;
-	static int K;
-	static int[][] map;
-	static int[][] origin;
-	static int[][] op;
+	static int N, M, K;
+	static int[][] map, origin, op;
 	static int[] order;
 	static int min_value = Integer.MAX_VALUE;
-
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+	static StringTokenizer st;
+	
 	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+		st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
@@ -68,8 +65,8 @@ public class Main {
 			int c = op[order[i]][1] - 1;
 			int s = op[order[i]][2];
 			
-			for (int j = 0; j < s; j++) {
-				rotate(j, r-s, c-s, 2*s);
+			for (int depth = 0; depth < s; depth++) {
+				rotate(r-s+depth, c-s+depth, r+s-depth, c+s-depth);
 			}
 		}
 		
@@ -81,32 +78,26 @@ public class Main {
 			min_value = Math.min(min_value, total);
 		}
 	}
-
-	static void rotate(int depth, int row, int col, int len) {
-		// init
-		int[][] temp = new int[N][M];
-		for (int i = 0; i < N; i++) {
-			temp[i] = map[i].clone();
+	
+	static void rotate(int sr, int sc, int er, int ec) {
+		// 좌측 상단값 복사
+		int temp = map[sr][sc];
+		// 위
+		for (int r = sr; r < er; r++) {
+			map[r][sc] = map[r+1][sc];
 		}
-		// right
-		for (int j = col+depth; j < col+len-depth; j++) {
-			temp[row+depth][j+1] = map[row+depth][j];
+		// 왼쪽
+		for (int c = sc; c < ec; c++) {
+			map[er][c] = map[er][c+1];
 		}
-		// left
-		for (int j = col+len-depth; j > col+depth; j--) {
-			temp[row+len-depth][j-1] = map[row+len-depth][j];
+		// 아래
+		for (int r = er; r > sr; r--) {
+			map[r][ec] = map[r-1][ec];
 		}
-		// down
-		for (int i = row+depth; i < row+len-depth; i++) {
-			temp[i+1][col+len-depth] = map[i][col+len-depth];
+		// 오른쪽
+		for (int c = ec; c > sc; c--) {
+			map[sr][c] = map[sr][c-1];
 		}
-		// up
-		for (int i = row+len-depth; i > row+depth; i--) {
-			temp[i-1][col+depth] = map[i][col+depth];
-		}
-		
-		for (int i = 0; i < N; i++) {
-			map[i] = temp[i].clone();
-		}
+		map[sr][sc + 1] = temp;
 	}
 }
