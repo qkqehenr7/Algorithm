@@ -7,6 +7,7 @@ public class Solution {
 
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringTokenizer st;
+	static StringBuilder sb = new StringBuilder();
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -24,7 +25,9 @@ public class Solution {
 			int g = (x + y)/2;
 			int ans = g*2 + Math.abs(g-x) + Math.abs(g-y);
 			
-			System.out.println("#" + t + " " + ans);
+			if (t != T) sb.append("#" + t + " " + ans + "\n");
+			else sb.append("#" + t + " " + ans);
 		}
+		System.out.println(sb);
 	}
 }
