@@ -1,55 +1,54 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        int n = Integer.parseInt(st.nextToken());
-        int r = Integer.parseInt(st.nextToken());
-        int c = Integer.parseInt(st.nextToken());
-
-        recursion(n, r, c, 0);
-    }
-
-    // 재귀적으로 사각형을 분할하는 메서드
-    private static void recursion(int n, int row, int col, int start) {
-        // 변의 길이가 2가 되면, 방문 순서 출력
-        if (n == 1) {
-            if (row % 2 == 0 && col % 2 == 0) {
-                // 1번째
-                System.out.println(start);
-            } else if (row % 2 == 0 && col % 2 == 1) {
-                // 2번째
-                System.out.println(start + 1);
-            } else if (row % 2 == 1 && col % 2 == 0) {
-                // 3번째
-                System.out.println(start + 2);
-            } else if (row % 2 == 1 && col % 2 == 1) {
-                // 4번째
-                System.out.println(start + 3);
-            }
-        }
-        // 변의 길이가 4 이상인 경우, 분할
-        else {
-            // 작은 사각형 한 변의 길이:
-            int length = (int) Math.pow(2, n-1);
-            // 작은 사각형의 넓이
-            int size = length * length;
-            // 가로 세로 길이에 따라 사각형 선택
-            if (row < length && col < length) { // 1번째 칸
-                recursion(n - 1, row, col, start);
-            } else if (row < length) {
-                recursion(n - 1, row, col - length, size + start); // 2번째 칸
-            } else if (col < length) {
-                recursion(n - 1, row - length, col, 2 * size + start); // 3번째 칸
-            } else {
-                recursion(n - 1, row - length, col - length, 3 * size + start); // 4번째 칸
-            }
-        }
-    }
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	static int N, r, c, answer;
+	
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		r = Integer.parseInt(st.nextToken());
+		c = Integer.parseInt(st.nextToken());
+		
+		Z(N, r, c, 0);
+		System.out.println(answer);
+	}
+	
+	static void Z(int n, int row, int col, int head) {
+		if (n == 1) {
+			if (row == 0 && col == 0) {
+				answer = head;
+			} else if (row == 0) {
+				answer = head+1;
+			} else if (col == 0) {
+				answer = head+2;
+			} else {
+				answer = head+3;
+			}	
+			return;
+		}
+		
+		int num = (int) Math.pow(2, n-1); // N=3, 4
+		
+		if (row < num && col < num) {
+			Z(n-1, row, col, head);
+		}
+		
+		if (row < num && col >= num) {
+			Z(n-1, row, col - num, (int)Math.pow(num, 2) + head);
+		}
+		
+		if (row >= num && col < num) {
+			Z(n-1, row - num, col, (int)Math.pow(num, 2)*2 + head);
+		}
+		
+		if (row >= num && col >= num) {
+			Z(n-1, row - num, col - num, (int)Math.pow(num, 2)*3 + head);
+		}
+	}
 }
