@@ -61,6 +61,8 @@ public class Main {
 	}
 
 	static void dfs(int row, int col, int cnt) {
+        
+        if (cnt >= min_value) return; // pruning
 		
 		if (col == 10) {
 			dfs(row+1, 0, cnt);
