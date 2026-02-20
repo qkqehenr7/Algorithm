@@ -1,15 +1,15 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
 	
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringTokenizer st;
 	static int N, M;
-	static int[] indegree;
-	static List<List<Integer>> adj;
-//	static ArrayList[] adj;
-	static StringBuilder sb = new StringBuilder();
 
 	public static void main(String[] args) throws IOException {
 		
@@ -17,12 +17,10 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		indegree = new int[N+1];
-		adj = new ArrayList<>(N+1);
-//		adj = new ArrayList[N+1];
+		int[] indegree = new int[N+1];
+		ArrayList<Integer>[] adj = new ArrayList[N+1];
 		for (int i = 0; i <= N; i++) {
-			adj.add(new ArrayList<>());
-//			adj[i] = new ArrayList<Integer>();
+			adj[i] = new ArrayList<>();
 		}
 		
 		for (int i = 0; i < M; i++) {
@@ -30,37 +28,31 @@ public class Main {
 			int A = Integer.parseInt(st.nextToken());
 			int B = Integer.parseInt(st.nextToken());
 			
-//			adj[A].add(B);
-			adj.get(A).add(B);
+			adj[A].add(B);
 			indegree[B]++;
 		}
 		
-//		Queue<Integer> queue = new ArrayDeque<>();
-		PriorityQueue<Integer> queue = new PriorityQueue<>();
+		PriorityQueue<Integer> pq = new PriorityQueue<>();
 		for (int i = 1; i <= N; i++) {
 			if (indegree[i] == 0) {
-				queue.offer(i);
-//				sb.append(i + " ");
+				pq.offer(i);
 			}
 		}
 		
-		while (!queue.isEmpty()) {
-			int curr = queue.poll();
-			sb.append(curr + " ");
+		StringBuilder sb = new StringBuilder();
+		while (!pq.isEmpty()) {
+			int curr = pq.poll();
+			sb.append(curr).append(" ");
 			
-			for (int next : adj.get(curr)) {
+			for (int next : adj[curr]) {
 				indegree[next]--; // 차수 1 감소
 				
 				if (indegree[next] == 0) {
-					queue.offer(next);
-//					sb.append(next + " ");
+					pq.offer(next);
 				}
 			}
 			
 		}
-		
 		System.out.println(sb);
-
 	}
-
 }
