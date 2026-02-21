@@ -18,13 +18,8 @@ public class Main {
 			String A = st.nextToken();
 			String B = st.nextToken();
 			
-			ArrayList<String> temp = adj.getOrDefault(A, new ArrayList<>());
-			temp.add(B);
-			adj.put(A, temp);
-			
-			temp = adj.getOrDefault(B, new ArrayList<>());
-			temp.add(A);
-			adj.put(B, temp);
+			adj.computeIfAbsent(A, k -> new ArrayList<>()).add(B);
+			adj.put(B, adj.getOrDefault(B, new ArrayList<>()));
 			
 			indegree.put(A, indegree.getOrDefault(A, 0)); // 너는 차수 올리지마
 			indegree.put(B, indegree.getOrDefault(B, 0) + 1); // 차수 증가
