@@ -7,8 +7,7 @@ public class Main {
 	static StringTokenizer st;
 	static int N, M, A, B, C;
 	static PriorityQueue<Edge> pq = new PriorityQueue<>();
-	
-	static int[] parent, rank;
+	static int[] parent;
 	
 	static class Edge implements Comparable<Edge> {
 		int from;
@@ -31,17 +30,13 @@ public class Main {
 		else return parent[x] = find(parent[x]);
 	}
 	
-	static void union(int x, int y) {
+	static boolean union(int x, int y) {
 		x = find(x);
 		y = find(y);
 		
-		if (rank[x] <= rank[y]) {
-			rank[x] += rank[y];
-			parent[y] = x;
-		} else {
-			rank[y] += rank[x];
-			parent[x] = y;
-		}
+		if (x == y) return false;
+		parent[x] = y;
+		return true;
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -52,8 +47,6 @@ public class Main {
 		
 		parent = new int[N+1];
 		for (int i = 0; i <= N; i++) parent[i] = i;
-		rank = new int[N+1];
-		Arrays.fill(rank, 1);
 		
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -68,10 +61,9 @@ public class Main {
 		while (!pq.isEmpty()) {
 			if (cnt == N-2) break;
 			Edge edge = pq.poll();
-			if (find(edge.from) != find(edge.to)) {
-				union(edge.from, edge.to);
-				total += edge.weight;
+			if (union(edge.from, edge.to)) {
 				cnt++;
+				total += edge.weight;
 			}
 		}
 		System.out.println(total);
