@@ -7,7 +7,6 @@ public class Main {
 	static StringTokenizer st;
 	static int N, K;
 	static int[] visited;
-	static int[] moves = {1, -1};
 	static int min_value = Integer.MAX_VALUE;
 	
 	public static void main(String[] args) throws IOException {
@@ -16,10 +15,10 @@ public class Main {
 		K = Integer.parseInt(st.nextToken());
 		
 		visited = new int[100003];
-		Arrays.fill(visited, 100003);
+		Arrays.fill(visited, 100003); // 최대 100002회 이동 가능
 		
 		bfs(N);
-		System.out.println(visited[K]-1);
+		System.out.println(visited[K] - 1);
 	}
 	
 	static void bfs(int idx) {
@@ -30,33 +29,31 @@ public class Main {
 		while (!queue.isEmpty()) {
 			int curr = queue.poll();
 			if (curr == K) {
-				min_value = Math.min(min_value, visited[curr]);
+				min_value = Math.min(min_value, visited[curr]); // 최단 시간 갱신
 				continue;
 			}
-			if (visited[curr] >= min_value) continue;
+			if (visited[curr] >= min_value) continue; // 이미 현재 시점의 최단 시간을 넘은 경우
 			
 			for (int i = 0; i < 3; i++) {
-				if (i != 2) { // 한 칸 이동
-					int next = curr + moves[i];
-					if (!check(next)) continue;
-					if (visited[next] <= visited[curr] + 1) continue;
-					visited[next] = visited[curr] + 1;
-					queue.offer(next);
+				int next = 0, sec = 0;
+				if (i == 0) { // 오른쪽
+					next = curr + 1;
+					sec = visited[curr] + 1;
 					
-				} else { // 순간이동
-					int next = curr * 2;
-					if (!check(next)) continue;
-					if (visited[next] <= visited[curr]) continue;
-					visited[next] = visited[curr];
-					queue.offer(next);
+				} else if (i == 1) { // 왼쪽
+					next = curr - 1;
+					sec = visited[curr] + 1;
 				}
+				else { // 순간이동
+					next = curr * 2;
+					sec = visited[curr];
+				}
+				
+				if (next < 0 || next > 100002) continue; // 배열 밖으로 나간 경우
+				if (visited[next] <= sec) continue; // 이미 더 빠른 방법이 있는 경우
+				visited[next] = sec;
+				queue.offer(next);
 			}
 		}
 	}
-	
-	static boolean check(int idx) {
-		if (idx < 0 || idx > 100002) return false;
-		return true;
-	}
-
 }
