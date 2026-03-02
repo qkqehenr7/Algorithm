@@ -7,7 +7,7 @@ public class Main {
 	static StringTokenizer st;
 	static StringBuilder sb = new StringBuilder();
 	static int T, A, B;
-	static int[] visited;
+	static boolean[] visited;
 	static String[] op;
 	
 	public static void main(String[] args) throws IOException {
@@ -19,7 +19,7 @@ public class Main {
 			A = Integer.parseInt(st.nextToken());
 			B = Integer.parseInt(st.nextToken());
 		
-			visited = new int[10000];
+			visited = new boolean[10000];
 			op = new String[10000];
 			
 			bfs();
@@ -32,7 +32,7 @@ public class Main {
 	static void bfs() {
 		Queue<Integer> queue = new ArrayDeque<>();
 		queue.offer(A);
-		visited[A] = 1;
+		visited[A] = true;
 		op[A] = "";
 		
 		while (!queue.isEmpty()) {
@@ -59,8 +59,8 @@ public class Main {
 					DSLR = "R";
 				}
 					
-				if (visited[next] != 0 && visited[next] <= visited[curr] + 1) continue; // 이미 빠른 방법이 존재하는 경우
-				visited[next] = visited[curr] + 1; // 누적합 계산
+				if (visited[next]) continue;
+				visited[next] = true;
 				op[next] = op[curr].concat(DSLR); // 연산자 갱신
 				queue.offer(next);
 			}
