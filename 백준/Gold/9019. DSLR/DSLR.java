@@ -8,7 +8,16 @@ public class Main {
 	static StringBuilder sb = new StringBuilder();
 	static int T, A, B;
 	static boolean[] visited;
-	static String[] op;
+	
+	static class Node {
+		int num;
+		String op;
+		
+		Node(int num, String op) {
+			this.num = num;
+			this.op = op;
+		}
+	}
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -20,49 +29,52 @@ public class Main {
 			B = Integer.parseInt(st.nextToken());
 		
 			visited = new boolean[10000];
-			op = new String[10000];
 			
 			bfs();
-			sb.append(op[B]).append("\n");
 		}
 		
 		System.out.println(sb.toString().trim());
 	}
 	
 	static void bfs() {
-		Queue<Integer> queue = new ArrayDeque<>();
-		queue.offer(A);
+		Queue<Node> queue = new ArrayDeque<>();
+		queue.offer(new Node(A, ""));
 		visited[A] = true;
-		op[A] = "";
 		
 		while (!queue.isEmpty()) {
-			int curr = queue.poll();
+			Node curr = queue.poll();
+			int num = curr.num;
+			String op = curr.op;
+			
+			if (num == B) {
+				sb.append(op).append("\n");
+				return;
+			}
 			
 			for (int i = 1; i <= 4; i++) {
 				int next = 0;
 				String DSLR = "";
 				
 				if (i == 1) {
-					next = (2 * curr) % 10000; 
+					next = (2 * num) % 10000; 
 					DSLR = "D";
 					
 				} else if (i == 2) {
-					next = (curr - 1 + 10000) % 10000;
+					next = (num - 1 + 10000) % 10000;
 					DSLR = "S";
 					
 				} else if (i == 3) {
-					next = rotate(curr, 0);
+					next = rotate(num, 0);
 					DSLR = "L";
 					
 				} else if (i == 4) {
-					next = rotate(curr, 1);
+					next = rotate(num, 1);
 					DSLR = "R";
 				}
 					
 				if (visited[next]) continue;
 				visited[next] = true;
-				op[next] = op[curr].concat(DSLR); // 연산자 갱신
-				queue.offer(next);
+				queue.offer(new Node(next, op.concat(DSLR)));
 			}
 		}
 	}
