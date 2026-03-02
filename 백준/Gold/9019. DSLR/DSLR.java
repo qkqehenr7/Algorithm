@@ -68,15 +68,11 @@ public class Main {
 	}
 	
 	static int rotate(int num, int dir) { // 0: 왼쪽, 1: 오른쪽
-		int d1 = num/1000;
-		num%=1000;
-		int d2 = num/100;
-		num%=100;
-		int d3 = num/10;
-		num%=10;
-		int d4 = num;
 		
-		if (dir == 0) return d2 * 1000 + d3 * 100 + d4 * 10 + d1;
-		else return d4 * 1000 + d1 * 100 + d2 * 10 + d3; 
+		if (dir == 0) {
+			return (num%1000) * 10 + num/1000;
+		} else {
+			return (num%10) * 1000 + num/10;
+		}
 	}
 }
