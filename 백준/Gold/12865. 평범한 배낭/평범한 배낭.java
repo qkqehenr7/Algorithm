@@ -1,32 +1,40 @@
 import java.io.*;
+import java.util.*;
 
 public class Main {
-	
+		
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	static int N, K, W, V;
 	static int[][] dp;
-	
 	public static void main(String[] args) throws IOException {
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] nums = br.readLine().split(" ");
-		int n = Integer.parseInt(nums[0]);
-		int k = Integer.parseInt(nums[1]);
+		st = new StringTokenizer(br.readLine());
 		
-		dp = new int[n + 1][k + 1];
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+
+		dp = new int[N+1][K+1]; // 물건의 개수, 누적 무게
 		
-		for (int i = 1; i <= n; i++) {
-			nums = br.readLine().split(" ");
-			int weight = Integer.parseInt(nums[0]);
-			int value = Integer.parseInt(nums[1]);
+		for (int cnt = 1; cnt <= N; cnt++) {
+			st = new StringTokenizer(br.readLine());
+			W = Integer.parseInt(st.nextToken());
+			V = Integer.parseInt(st.nextToken());
 			
-			for (int w = 1; w <= k; w++) {
-				if (weight <= w) {
-					dp[i][w] = Math.max(dp[i-1][w], dp[i-1][w-weight] + value);
+			for (int total = 0; total <= K; total++) {
+				if (total - W >= 0) {
+					dp[cnt][total] = Math.max(dp[cnt-1][total], dp[cnt-1][total-W] + V);
 				} else {
-					dp[i][w] = dp[i-1][w];
+					dp[cnt][total] = dp[cnt-1][total];
 				}
 			}
 		}
 		
-		System.out.println(dp[n][k]);
+		int result = 0;
+		for (int i = 0; i <= K; i++) {
+			result = Math.max(dp[N][i], result);
+		}
+		
+		System.out.println(result);
 	}
 }
